@@ -15,7 +15,10 @@ public class Main {
         
         dp[0] = arr[0];
         dp[1] = arr[1];
-        dp[2] = arr[1] + arr[2];
+        if (N >= 2) {
+            dp[2] = arr[1] + arr[2];            
+        }
+        
 
         
         for (int i = 3; i <= N; i++) {
