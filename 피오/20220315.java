@@ -79,7 +79,7 @@ public class Main_7562 { //나이트의 이동
                 }
 
                 if (ny == targetY && nx == targetX) {
-                    return board[ny][nx] - 1;
+                    return board[ny][nx] - 1; 
                 }
             }
         }
