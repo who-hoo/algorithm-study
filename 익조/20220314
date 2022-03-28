@@ -1,0 +1,64 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Main {
+
+    static int I, r, c;
+    static int[] dx = {1, 1, -1, -1, 2, 2, -2, -2}, dy = {2, -2, 2, -2, 1, -1, 1, -1};
+
+    static class Point {
+        int x;
+        int y;
+        int result;
+
+        public Point(int x, int y, int result) {
+            this.x = x;
+            this.y = y;
+            this.result = result;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int x, y, nx, ny;
+
+        for (int i = 0; i < n; i++) {
+            I = sc.nextInt();
+            x = sc.nextInt();
+            y = sc.nextInt();
+            r = sc.nextInt();
+            c = sc.nextInt();
+
+            boolean[][] visited = new boolean[I][I];
+            visited[x][y] = true;
+            
+            Queue<Point> queue = new LinkedList<>();
+            queue.add(new Point(x, y, 0));
+            
+            while (!queue.isEmpty()) {
+                Point point = queue.poll();
+
+                if (point.x == r && point.y == c) {
+                    System.out.println(point.result);
+                    break;
+                }
+
+                for (int j = 0; j < 8; j++) {
+                    nx = point.x + dx[j];
+                    ny = point.y + dy[j];
+
+                    if ( nx < 0 || nx > I - 1 || ny < 0 || ny > I -1 ) {
+                        continue;
+                    }
+
+                    if (!visited[nx][ny]) {
+                        visited[nx][ny] = true;
+                        queue.add(new Point(nx, ny, point.result + 1));
+                    }
+                }
+            }
+        }
+    }
+}
