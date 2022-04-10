@@ -66,21 +66,18 @@ class Solution {
             nodes[wire[0]].connect(nodes[wire[1]]);
         }
 
-        int[] diff = new int[wires.length];
+        int answer = n;
         for (int i = 0; i < wires.length; i++) {
             int[] wire = wires[i];
             nodes[wire[0]].disconnect(nodes[wire[1]]);
             int group = dfs(nodes[1], n);
-            diff[i] = Math.abs((n - group) - group);
+            int diff = Math.abs((n - group) - group);
+            if (diff < answer) {
+                answer = diff;
+            }
             nodes[wire[0]].connect(nodes[wire[1]]);
         }
 
-        int answer = diff[0];
-        for (int d : diff) {
-            if (d < answer) {
-                answer = d;
-            }
-        }
         return answer;
     }
 }
