@@ -1,5 +1,3 @@
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 class Main {
@@ -15,14 +13,12 @@ class Main {
             prices[i] = sc.nextInt();
         }
 
-        Arrays.sort(prices, Collections.reverseOrder());
-
         int result = 0;
 
-        for (int price : prices) {
-            if (k / price > 0) {
-                result += (k / price);
-                k %= price;
+        for (int i = n-1; i > -1; i--) {
+            if (k / prices[i] > 0) {
+                result += (k / prices[i]);
+                k %= prices[i];
             }
             if (k == 0) {
                 break;
