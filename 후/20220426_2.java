@@ -18,6 +18,11 @@ class Solution {
                     prev = current;
                 }
             } catch (IndexOutOfBoundsException e) {
+                if (cnt == 1) {
+                    result.append(prev);
+                } else {
+                    result.append(cnt).append(prev);
+                }
                 result.append(s.substring(i));
                 cnt = 1;
                 prev = "";
@@ -27,9 +32,6 @@ class Solution {
             result.append(prev);
         } else {
             result.append(cnt).append(prev);
-        }
-        if (s.length() % unit > 0) {
-            result.append(s.substring(s.length() - unit));
         }
         return result.toString();
     }
