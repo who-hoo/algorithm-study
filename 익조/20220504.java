@@ -60,7 +60,7 @@ class Main {
         }
 
         if (flag) {
-            System.out.println(0);
+            System.out.println(result);
             return;
         }
 
@@ -91,17 +91,14 @@ class Main {
                 ny = tomato.y + dy[k];
                 nz = tomato.z + dz[k];
 
-                if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1 || nz < 0 || nz > h - 1 || visitedHouse.get(nz)[nx][ny]
-                    || house.get(nz)[nx][ny] == -1) {
+                if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1 || nz < 0 || nz > h - 1
+                    || visitedHouse.get(nz)[nx][ny] || house.get(nz)[nx][ny] == -1) {
                     continue;
                 }
 
                 visitedHouse.get(nz)[nx][ny] = true;
-
-                if (house.get(nz)[nx][ny] == 0) {
-                    house.get(nz)[nx][ny] = 1;
-                    queue.add(new Tomato(nx, ny, nz,tomato.day + 1));
-                }
+                house.get(nz)[nx][ny] = 1;
+                queue.add(new Tomato(nx, ny, nz, tomato.day + 1));
             }
         }
 
