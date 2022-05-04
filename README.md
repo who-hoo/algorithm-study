@@ -7,6 +7,7 @@
 [@동기](https://github.com/donggi-lee-bit)
 [@루시드](https://github.com/leejohy-0223)
 [@익조](https://github.com/ikjo93)
+[@제리](https://github.com/jeremy0405)
 [@포키](https://github.com/Seokho-Ham)
 [@피오](https://github.com/NB993)
 [@후](https://github.com/who-hoo)
@@ -17,7 +18,7 @@
 - 문제 푸는 날 : 매주 화요일, 금요일
 - 문제 출제자는 전 날(월요일, 목요일) 22시까지 문제를 선정하여 `Issue`를 등록합니다.
   - [문제 출제 방법](https://github.com/who-hoo/algorithm-study/blob/main/docs/how_to_create_issue.md)
-  - 문제 출제 순서 : 동기 -> 루시드 -> 익조 -> 포키 -> 피오 -> 후
+  - 문제 출제 순서 : 동기 -> 루시드 -> 익조 -> 제리 -> 포키 -> 피오 -> 후
 - 화요일, 금요일마다 선정된 문제를 각자 풀어서 `Pull Request`를 통하여 제출합니다.
   - [문제 제출 방법](https://github.com/who-hoo/algorithm-study/blob/main/docs/how_to_create_pr.md)
   - 문제는 풀지 못해도 괜찮으며, 풀지 못했어도 풀이 흔적을 남겨주셨으면 좋겠습니다.
