@@ -85,7 +85,7 @@ class Main {
 
         while (!queue.isEmpty()) {
             Tomato tomato = queue.poll();
-            result = tomato.day > result ? tomato.day : result;
+            result = Math.max(tomato.day, result);
             for (int k = 0; k < 6; k++) {
                 nx = tomato.x + dx[k];
                 ny = tomato.y + dy[k];
