@@ -9,24 +9,15 @@ public class 빛의_경로_사이클 {
     private static int[] rowDirection = {0, -1, 0, 1};
     private static int[] columnDirection = {-1, 0, 1, 0};
 
-    public static void main(String[] args) {
-        빛의_경로_사이클 q = new 빛의_경로_사이클();
-
-        int[] solution = q.solution(new String[]{"SL","LR"});
-        for (int i : solution) {
-            System.out.println(i);
-        }
-    }
-
     public int[] solution(String[] grid) {
-        int rowLength = grid.length;
-        int columnLength = grid[0].length();
+        int rowLength = grid[0].length();
+        int columnLength = grid.length;
 
-        Node[][] map = new Node[rowLength][columnLength];
+        Node[][] map = new Node[columnLength][rowLength];
 
         //문자열을 2차원 배열에 담는 작업
-        for (int i = 0; i < rowLength; i++) {
-            for (int j = 0; j < columnLength; j++) {
+        for (int i = 0; i < columnLength; i++) {
+            for (int j = 0; j < rowLength; j++) {
                 map[i][j] = new Node(grid[i].charAt(j));
             }
         }
@@ -34,33 +25,30 @@ public class 빛의_경로_사이클 {
         List<Integer> result = new ArrayList<>();
 
 
-        for (int i = 0; i < rowLength; i++) {
-            for (int j = 0; j < columnLength; j++) {
+        for (int i = 0; i < columnLength; i++) {
+            for (int j = 0; j < rowLength; j++) {
                 //하나의 점에 대해 4방향 확인하기
                 for (int k = 0; k < 4; k++) {
-                    map[i][j].direction[k] = true;
-                    result.add(helper(map, i, j, k));
+                    result.add(helper(map, j, i, k));
                 }
             }
         }
 
-        int[] answer = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            answer[i] = result.get(i);
-        }
-
-        return answer;
+        return result.stream()
+                .mapToInt(Integer::intValue)
+                .filter(i -> i > 0)
+                .sorted()
+                .toArray();
     }
 
     public int helper(Node[][] map, int currentRow, int currentColumn, int direction) {
-        int count = 1;
+        int count = 0;
 
         //이동하게 될 위치
         int row = currentRow + rowDirection[direction];
         int column = currentColumn + columnDirection[direction];
 
         while (true) {
-
 
             //끝에 도착하면 돌아가도록
             if (row < 0) {
@@ -77,12 +65,13 @@ public class 빛의_경로_사이클 {
             }
 
             //현재 노드의 direction이 true면 종료
-            if (map[row][column].direction[direction]) {
+            if (map[column][row].direction[direction]) {
                 break;
             }
 
+            map[column][row].direction[direction] = true;
 
-            if (map[row][column].type == 'L') {
+            if (map[column][row].type == 'L') {
                 //좌회전
                 //up0 -> left 1
                 //left1 -> down2
@@ -93,7 +82,7 @@ public class 빛의_경로_사이클 {
                 } else {
                     direction = 0;
                 }
-            } else if (map[row][column].type == 'R') {
+            } else if (map[column][row].type == 'R') {
                 //우회전
                 //up0 -> right 3
                 //left1 -> up0
@@ -106,6 +95,7 @@ public class 빛의_경로_사이클 {
                     direction--;
                 }
             }
+
             row += rowDirection[direction];
             column += columnDirection[direction];
 
