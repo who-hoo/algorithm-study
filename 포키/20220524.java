@@ -13,26 +13,26 @@ public class BOJ2468 {
         graph = new int[n][n];
 
 
-        int min = 0;
-        int max = 0;
+        int currentWaterHeight = 0;
+        int maxWaterHeight = 0;
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 graph[i][j] = sc.nextInt();
-                if (max < graph[i][j]) max = graph[i][j];
+                if (maxWaterHeight < graph[i][j]) maxWaterHeight = graph[i][j];
             }
         }
 
         int answer = 1;
 
-        while (min <= max) {
+        while (currentWaterHeight <= maxWaterHeight) {
             visited = new boolean[n][n];
             int count = 0;
 
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (graph[i][j] <= min) {
+                    if (graph[i][j] <= currentWaterHeight) {
                         visited[i][j] = true;
                     }
                 }
@@ -40,13 +40,13 @@ public class BOJ2468 {
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (!visited[i][j] && graph[i][j] > min) {
-                        count += dfs(min, i, j);
+                    if (!visited[i][j] && graph[i][j] > currentWaterHeight) {
+                        count += dfs(currentWaterHeight, i, j);
                     }
                 }
             }
-            answer = Math.max(count, answer);
-            min++;
+            answer = Math.max(answer, count);
+            currentWaterHeight++;
         }
 
         System.out.println(answer);
@@ -54,7 +54,7 @@ public class BOJ2468 {
     }
 
     public static int dfs(int waterHeight, int row, int column) {
-        visited[column][row] = true;
+        visited[row][column] = true;
 
         //4가지 방향 검사
         //상,좌,하,우z
@@ -67,7 +67,7 @@ public class BOJ2468 {
                 continue;
             }
 
-            if (!visited[nextColumn][nextRow] && graph[nextColumn][nextRow] > waterHeight) {
+            if (!visited[nextRow][nextColumn] && graph[nextRow][nextColumn] > waterHeight) {
                 dfs(waterHeight, nextRow, nextColumn);
             }
         }
