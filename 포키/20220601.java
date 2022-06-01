@@ -10,8 +10,6 @@ public class BOJ1764 {
         String[] s = sc.nextLine().split(" ");
         int n = Integer.parseInt(s[0]);
         int m = Integer.parseInt(s[1]);
-        int answer = 0;
-
 
         List<String> l = new ArrayList<>();
 
