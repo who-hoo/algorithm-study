@@ -36,33 +36,28 @@ class Main {
         int n = Integer.parseInt(br.readLine());
         int m = Integer.parseInt(br.readLine());
 
-        Map<Integer, Boolean> votes = new HashMap<>();
+        Map<Integer, Student> frames = new HashMap<>();
         StringTokenizer st = new StringTokenizer(br.readLine());
         List<Student> list = new ArrayList<>();
 
         for (int i = 0; i < m; i++) {
-            int student = Integer.parseInt(st.nextToken());
+            int studentId = Integer.parseInt(st.nextToken());
 
-            if (votes.containsKey(student)) {
-                for (Student s : list) {
-                    if (s.id == student) {
-                        s.score++;
-                        Collections.sort(list);
-                        break;
-                    }
-                }
+            if (frames.containsKey(studentId)) {
+                frames.get(studentId).score++;
             }
             else {
                 if (list.size() == n) {
                     Student s = list.get(0);
                     list.remove(s);
-                    votes.remove(s.id);
+                    frames.remove(s.id);
                 }
-                list.add(new Student(student, 1, i));
-                Collections.sort(list);
+                Student student = new Student(studentId, 1, i);
+                frames.put(studentId, student);
+                list.add(student);
             }
 
-            votes.put(student, true);
+            Collections.sort(list);
         }
 
         List<Integer> result = new ArrayList<>();
