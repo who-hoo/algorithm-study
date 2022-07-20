@@ -16,19 +16,19 @@ public class Main {
 			this.n = n;
 		}
 
-		void insertLeft(Node node) {
-			if (this.left == null) {
-				this.left = node;
+		void insert(Node node) {
+			if (this.n > node.n) {
+				if (this.left == null) {
+					this.left = node;
+				} else {
+					this.left.insert(node);
+				}
 			} else {
-				this.left.insertLeft(node);
-			}
-		}
-
-		void insertRight(Node node) {
-			if (this.right == null) {
-				this.right = node;
-			} else {
-				this.right.insertRight(node);
+				if (this.right == null) {
+					this.right = node;
+				} else {
+					this.right.insert(node);
+				}
 			}
 		}
 	}
@@ -39,14 +39,6 @@ public class Main {
 
 		BinaryTree(Node root) {
 			this.root = root;
-		}
-
-		void insert(Node node) {
-			if (root.n > node.n) {
-				root.insertLeft(node);
-			} else {
-				root.insertRight(node);
-			}
 		}
 	}
 
@@ -59,11 +51,21 @@ public class Main {
 		String line;
 		while ((line = in.readLine()) != null) {
 			Node node = new Node(Integer.parseInt(line));
-			tree.insert(node);
+			tree.root.insert(node);
 		}
-		//TODO: 후위순회
+		postOrder(out, root);
 
 		out.close();
 		in.close();
+	}
+
+	private static void postOrder(BufferedWriter out, Node node) throws IOException {
+		if (node.left != null) {
+			postOrder(out, node.left);
+		}
+		if (node.right != null) {
+			postOrder(out, node.right);
+		}
+		out.write(node.n + System.lineSeparator());
 	}
 }
