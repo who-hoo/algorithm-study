@@ -11,7 +11,7 @@ public class Main {
     private static int[] team1;
     private static int[] team2;
     private static boolean[] visited;
-    private static int answer = 123456789;
+    private static int answer = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -45,28 +45,17 @@ public class Main {
     }
 
     private static void calculate() {
-        team1 = new int[n / 2];
-        team2 = new int[n / 2];
-        int idx1 = 0;
-        int idx2 = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (visited[i] == true) {
-                team1[idx1++] = i;
-            } else {
-                team2[idx2++] = i;
-            }
-        }
-
         int score1 = 0;
         int score2 = 0;
-        for (int i = 0; i < team1.length; i++) {
-            for (int j = 0; j < team1.length; j++) {
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
                 if (visited[i] && visited[j]) {
                     score1 += board[i][j];
+                    score1 += board[j][i];
                 }
                 if (!visited[i] && !visited[j]) {
                     score2 += board[i][j];
+                    score2 += board[j][i];
                 }
             }
         }
