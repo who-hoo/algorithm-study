@@ -31,24 +31,24 @@ class Main {
 
         boolean[][] visited = new boolean[size][size];
         visited[n][n] = true;
-        move(n, n + 1, 1, 1.0, visited, true, "EAST");
+        move(n, n + 1, 1, 1.0, visited, "EAST");
 
         visited = new boolean[size][size];
         visited[n][n] = true;
-        move(n, n - 1, 1, 1.0, visited, true, "WEST");
+        move(n, n - 1, 1, 1.0, visited, "WEST");
 
         visited = new boolean[size][size];
         visited[n][n] = true;
-        move(n + 1, n, 1, 1.0, visited, true, "SOUTH");
+        move(n + 1, n, 1, 1.0, visited, "SOUTH");
 
         visited = new boolean[size][size];
         visited[n][n] = true;
-        move(n - 1, n, 1, 1.0, visited, true, "NORTH");
+        move(n - 1, n, 1, 1.0, visited, "NORTH");
 
         System.out.println(result);
     }
 
-    public static void move(int x, int y, int depth, double percent, boolean[][] visited, boolean simple, String direction) {
+    public static void move(int x, int y, int depth, double percent, boolean[][] visited, String direction) {
         if (x < 0 || x > size - 1 || y < 0 || y > size -1 || !percentagesByDirection.containsKey(direction) || visited[x][y]) {
             return;
         }
@@ -56,21 +56,18 @@ class Main {
         percent *= percentagesByDirection.get(direction) * 1000000000 / 1000000000.0;
 
         if (depth == n) {
-            if (simple) {
-                result += percent;
-            }
+            result += percent;
             return;
         }
 
         visited[x][y] = true;
         depth++;
 
-        move(x + 1, y, depth, percent, visited, simple, "SOUTH");
-        move( x - 1, y, depth, percent, visited, simple, "NORTH");
-        move( x, y + 1, depth, percent, visited, simple, "EAST");
-        move( x, y - 1, depth, percent, visited, simple, "WEST");
+        move(x + 1, y, depth, percent, visited, "SOUTH");
+        move( x - 1, y, depth, percent, visited, "NORTH");
+        move( x, y + 1, depth, percent, visited, "EAST");
+        move( x, y - 1, depth, percent, visited, "WEST");
 
         visited[x][y] = false;
-        depth--;
     }
 }
