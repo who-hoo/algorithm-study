@@ -2,19 +2,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static int total = 0;
-    static int result = Integer.MAX_VALUE;
     static int n;
     static int m;
-    static List<City> cities;
+    static List<ArrayList<City>> cities;
     static boolean[] visited;
-    static int start;
-    static int end;
+    static int[] dist;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,57 +23,64 @@ public class Main {
         m = Integer.parseInt(br.readLine());    // 버스의 개수
         cities = new ArrayList<>();
         visited = new boolean[n + 1];
+        dist = new int[n + 1];
+        Arrays.fill(dist, (int) 1e9);
 
-        int[] town = new int[n + 1];
-        for (int i = 1; i < town.length; i++) {
-            town[i] = i;
+        for (int i = 0; i <= n; i++) {
+            cities.add(new ArrayList<>());
         }
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-            int depart = Integer.parseInt(st.nextToken());
-            int arrive = Integer.parseInt(st.nextToken());
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
-            cities.add(new City(depart, arrive, cost));
+            cities.get(from).add(new City(to, cost));
         }
         st = new StringTokenizer(br.readLine(), " ");
-        start = Integer.parseInt(st.nextToken());
-        end = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
 
-        dfs(1, 0);
-        System.out.println(result);
+
+        System.out.println(dijkstra(start, end));
     }
 
-    private static void dfs(int depart, int arrive) {
-        // 탈출 조건
-        if (arrive == end) { // 이것이 아닌듯
-            result = Math.min(total, result);
-            return;
-        }
+    private static int dijkstra(int start, int end) {
+        PriorityQueue<City> q = new PriorityQueue<>();
+        dist[start] = 0;
+        q.offer(new City(start, 0));
 
-        // 체크할 건 도시 번호고, for문은 버스 경우의 수만큼 돌려야하는데 visited 에서 arrayindexoutofboundsEcefasdfs
-        int before = 0;
-        for (int i = 0; i < m; i++) {
-            City city = cities.get(i);
-            if (before != city.depart) { // 조건이 이거면 되는걸까
-                visited[i + 1] = true;
-                total += city.cost;
-                dfs(city.depart, city.arrive);
-                visited[i + 1] = false;
+        while (!q.isEmpty()) {
+            City pollCity = q.poll();
+            int to = pollCity.to;
+
+            if (!visited[to]) {
+                visited[to] = true;
+
+                for (City city : cities.get(to)) {
+                    if (!visited[city.to] && dist[city.to] > (dist[to] + city.cost)) {
+                        dist[city.to] = dist[to] + city.cost;
+                        q.offer(new City(city.to, dist[city.to]));
+                    }
+                }
             }
         }
+        return dist[end];
     }
 }
 
-class City {
+class City implements Comparable<City> {
 
-    int depart;
-    int arrive;
+    int to;
     int cost;
 
-    public City(int depart, int arrive, int cost) {
-        this.depart = depart;
-        this.arrive = arrive;
+    public City(int to, int cost) {
+        this.to = to;
         this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(City o) {
+        return cost - o.cost;
     }
 }
