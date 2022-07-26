@@ -18,7 +18,7 @@ public class Main_dijkstra {
         int[] d = new int[n + 1]; //최소 비용 테이블
         List<List<Node>> graph = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i <= n; i++) {
             d[i] = Integer.MAX_VALUE;
             graph.add(new ArrayList<>());
         }
