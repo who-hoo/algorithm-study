@@ -1,40 +1,68 @@
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-class Solution {
-    public int[] solution(int n, String[] words) {
-        int[] answer = new int[2];
-        Set<String> memories = new HashSet<>();  // 중복 단어를 확인할 Set
-        memories.add(words[0]);
-        int prevWordCharAscii = words[0].charAt(words[0].length() - 1) - 'a';
-        int peopleOrder = 1;
-        int turnCount = 1;
+public class Main {
+    static int N;
+    static int M;
+    static boolean[][] visited;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    static int[][] board;
 
-        while (true) {
-            for (int i = 1; i < words.length; i++) {
-                int nowWordCharAscii = words[i].charAt(0) - 'a';
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-                if (peopleOrder == n) {
-                    peopleOrder = 1;
-                    turnCount++;
-                } else {
-                    peopleOrder++;
-                }
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-                if (!memories.add(words[i]) || prevWordCharAscii != nowWordCharAscii) {
-                    // 탈락
-                    answer[0] = peopleOrder;
-                    answer[1] = turnCount;
-                    return answer;
-                }
-                prevWordCharAscii = words[i].charAt(words[i].length() - 1) - 'a';
+        visited = new boolean[N][M];
+        board = new int[N][M];
 
-                memories.add(words[i]);
+        for (int i = 0; i < N; i++) {
+            String[] strings = br.readLine().split("");
+            for (int j = 0; j < M; j++) {
+                board[i][j] = Integer.parseInt(strings[j]);
             }
-            answer[0] = 0;
-            answer[1] = 0;
-            return answer;
+        }
+
+        visited[0][0] = true;
+        bfs(0, 0);
+        System.out.println(board[N - 1][M - 1]);
+
+    }
+
+    private static void bfs(int x, int y) {
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(x, y));
+
+        while (!q.isEmpty()) {
+            Node poll = q.poll();
+            for (int i = 0; i < 4; i++) {
+                int nx = poll.x + dx[i];
+                int ny = poll.y + dy[i];
+
+                if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                if (visited[nx][ny] || board[nx][ny] == 0) continue;
+                q.add(new Node(nx, ny));
+                board[nx][ny] = board[poll.x][poll.y] + 1;
+                visited[nx][ny] = true;
+            }
         }
     }
-} 
+
+}
+
+class Node {
+    int x;
+    int y;
+
+    public Node(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
