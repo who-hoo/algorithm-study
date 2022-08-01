@@ -1,52 +1,47 @@
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Comparator;
+import java.util.StringTokenizer;
 
-public class Solution2 {
+public class Main {
 
-	private static int COMMAND = 0;
-	private static int ID = 1;
-	private static int NICKNAME = 2;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 
-	public String[] solution(String[] record) {
-		Map<String, String> map = new HashMap<>();
-		List<String> arr = new ArrayList<>();
+		int n = Integer.parseInt(br.readLine());
+		int[][] meetingTime = new int[n][2];
 
-		for (String r : record) {
-			String[] split = r.split(" ");
+		for (int i = 0; i < n; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			meetingTime[i][0] = Integer.parseInt(st.nextToken());	// 시작 시간
+			meetingTime[i][1] = Integer.parseInt(st.nextToken());	// 종료 시간
+		}
 
-			if (split[COMMAND].equals("Enter")) {
-				map.put(split[ID], split[NICKNAME]);
-				arr.add(split[ID] + "님이 들어왔습니다.");
-			} else if (split[COMMAND].equals("Leave")) {
-				arr.add(split[ID] + "님이 나갔습니다.");
-			} else if (split[COMMAND].equals("Change")) {
-				map.put(split[ID], split[NICKNAME]);
+		Arrays.sort(meetingTime, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+
+				if (o1[1] == o2[1]) {
+					return o1[0] - o2[0];
+				}
+				return o1[1] - o2[1];
+			}
+		});
+
+		int prevEndTime = 0;
+		int count = 0;
+
+		for (int i = 0; i < n; i++) {
+			// 회의 시작 시간이 이전 회의 종료시간보다 크거나 같으면
+			if (prevEndTime <= meetingTime[i][0]) {
+				prevEndTime = meetingTime[i][1];
+				count++;
 			}
 		}
-
-		String[] answer = new String[arr.size()];
-
-		for (int i = 0; i < arr.size(); i++) {
-			int index = arr.get(i).indexOf("님");
-			String id = arr.get(i).substring(0, index);
-			String currentNickname = map.get(id);
-
-			answer[i] = currentNickname + arr.get(i).substring(index);
-		}
-
-
-		return answer;
-	}
-
-	public static void main(String[] args) {
-		String[] record = {"Enter uid1234 Muzi", "Enter uid4567 Prodo", "Leave uid1234", "Enter uid1234 Prodo", "Change uid4567 Ryan"};
-		// ["Prodo님이 들어왔습니다.", "Ryan님이 들어왔습니다.", "Prodo님이 나갔습니다.", "Prodo님이 들어왔습니다."]
-
-		Solution2 s = new Solution2();
-		System.out.println(Arrays.toString(s.solution(record)));
+		System.out.println(count);
 	}
 
 }
