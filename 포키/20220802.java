@@ -2,6 +2,7 @@ package level2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class 교점에_별만들기 {
 
@@ -13,28 +14,31 @@ public class 교점에_별만들기 {
             this.x = x;
             this.y = y;
         }
+
+        @Override
+        public String toString() {
+            return "Point{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
+        }
     }
 
     public String[] solution(int[][] line) {
-        String[] answer = {};
 
-//        12
-//        23
-//        34
-//        45
 
         List<Point> points = new ArrayList<>();
 
-        for (int i = 0; i < line.length-1; i++) {
+        for (int i = 0; i < line.length; i++) {
             int[] abc = line[i];
             int a = abc[0];
             int b = abc[1];
-            int c = abc[2];
+            int e = abc[2];
 
-            for (int j = i+1; j < line.length; j++) {
+            for (int j = i + 1; j < line.length; j++) {
                 int[] def = line[j];
-                int d = def[0];
-                int e = def[1];
+                int c = def[0];
+                int d = def[1];
                 int f = def[2];
 
                 int xNumerator = b * f - e * d;
@@ -50,9 +54,54 @@ public class 교점에_별만들기 {
             }
         }
 
+        int maxX = 0;
+        int minX = 0;
+        int maxY = 0;
+        int minY = 0;
+
+        for (Point point : points) {
+            maxX = Math.max(maxX, point.x);
+            minX = Math.min(minX, point.x);
+            maxY = Math.max(maxY, point.y);
+            minY = Math.min(minY, point.x);
+        }
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY;
 
 
-        return answer;
+        String[] result = new String[height + 1];
+
+        for (int i = 0; i < height; i++) {
+            StringBuilder sb = new StringBuilder();
+
+            for (int j = 0; j <= width; j++) {
+                int curI = i;
+                int curJ = j;
+                Optional<Point> point = points.stream()
+                        .filter(p -> (p.x) == curJ && p.y == curI)
+                        .findFirst();
+
+                if (point.isEmpty()) sb.append('.');
+                else sb.append('*');
+            }
+            result[i] = sb.toString();
+        }
+
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        교점에_별만들기 s = new 교점에_별만들기();
+
+        int[][] l = {{2, -1, 4}, {-2, -1, 4}, {0, -1, 1}, {5, -8, -12}, {5, 8, 12}};
+
+        String[] solution = s.solution(l);
+
+        for (String s1 : solution) {
+            System.out.println(s1);
+        }
     }
 }
 
@@ -65,4 +114,6 @@ public class 교점에_별만들기 {
 
 //교점 찍어보기.
 //교점 중 상하 좌우 가장 큰값을 사이즈로잡기.
+
+
 
