@@ -1,34 +1,28 @@
 def solution(line):
-    answer = []
     result = []
-
-    for i in range(len(line) - 1):
+    uy, dy, ux, dx = 10e10, -10e10, 10e10, -10e10
+    for i in range(0, len(line) - 1):
+        A, B, E = line[i]
         for j in range(i + 1, len(line)):
-            s = solve(line[i], line[j])
+            C, D, F = line[j]
+            denominator = (A * D) - (B * C)
+            if denominator == 0:
+                continue
 
-            if s != None:
-                r1 = min(r1, s[1]) if len(result) != 0 else s[1]
-                r2 = max(r2, s[1]) if len(result) != 0 else s[1]
-                c1 = min(c1, s[0]) if len(result) != 0 else s[0]
-                c2 = max(c2, s[0]) if len(result) != 0 else s[0]
-                result.append(s)
+            x = ((B * F) - (E * D)) // denominator
+            y = ((E * C) - (A * F)) // denominator
 
-    answer = [['.'] * (c2 - c1 + 1) for i in range(r2 - r1 + 1)]
+            if ((B * F) - (E * D)) % denominator == 0 and ((E * C) - (A * F)) % denominator == 0:
+                result.append([x, y])
+                ux, uy, dx, dy = min(x, ux), min(y, uy), max(x, dx), max(y, dy)
+
+    answer = [['.'] * (dx - ux + 1) for _ in range(dy - uy + 1)]
 
     for x, y in result:
-        answer[y - r1][x - c1] = '*'
+        answer[y - uy][x - ux] = '*'
 
     for i in range(len(answer)):
         answer[i] = ''.join(answer[i])
 
+    answer.reverse()
     return answer
-
-
-def solve(eq1, eq2):
-    A, B, E = eq1
-    C, D, F = eq2
-
-    if A * D - B * C != 0 and (B * F - E * D) % (A * D - B * C) == 0 and (E * C - A * F) % (A * D - B * C) == 0:
-        return [(B * F - E * D) // (A * D - B * C), - (E * C - A * F) // (A * D - B * C)]
-    else:
-        return None
