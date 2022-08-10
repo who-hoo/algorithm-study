@@ -12,7 +12,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int s = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[n];
+        int[] arr = new int[n + 1];
         st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
@@ -26,16 +26,21 @@ public class Main {
     public int solution(int n, int s, int[] arr) {
         int start = 0;
         int end = 0;
+        int min = Integer.MAX_VALUE;
         int total = 0;
-        while (start <= n && end <= n) {
+        while (start <= end && end <= n) {
             if (total < s) {
-                total += arr[end];
-                end++;
-            } else if (total > s) {
-                total -= arr[start];
-                start++;
+                total += arr[end++];
+            } else {
+                min = Math.min(min, end - start);
+                total -= arr[start++];
             }
         }
-        return -1;
+
+        if (min == Integer.MAX_VALUE) {
+            return 0;
+        } else {
+            return min;
+        }
     }
 }
