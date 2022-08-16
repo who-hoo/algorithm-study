@@ -11,7 +11,7 @@ for j in tmp:
 
 def solve(target, mallfunc, mallList):
     result = abs(target - 100)
-    for i in range(500001):
+    for i in range(1000000):
         if malfunc_checker(i, mallList):
             now = abs(target - i)
             result = min(result, now + len(str(i)))
