@@ -14,9 +14,9 @@ public class Solution {
         }
         
         long sum1 = getSum(q1), sum2 = getSum(q2);
-        int result, count = 0, delay = 0;
+        int result, count = 0;
         while (true) {
-            if (delay > 2 * length + 2) {
+            if (count > 2 * length + 2) {
                 return -1;
             } else if (sum1 > sum2) {
                 Integer i1 = q1.poll();
@@ -34,8 +34,6 @@ public class Solution {
                 result = count;
                 break;
             }
-
-            delay++;
         }
 
         return result;
