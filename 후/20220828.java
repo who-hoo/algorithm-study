@@ -12,8 +12,8 @@ class Solution {
 
         int answer = -1;
         int count = 0;
-        int sum1 = q1.stream().mapToInt(Integer::intValue).sum();
-        int sum2 = q2.stream().mapToInt(Integer::intValue).sum();
+        long sum1 = q1.stream().mapToLong(Integer::longValue).sum();
+        long sum2 = q2.stream().mapToLong(Integer::longValue).sum();
         while (true) {
             if (count > queue1.length * 2 + 2) {
                 break;
