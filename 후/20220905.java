@@ -5,7 +5,7 @@ class Solution {
     public int solution(String str1, String str2) {
         List<String> set1 = set(str1);
         List<String> set2 = set(str2);
-        int intersection = intersectionCount(set1, set2);
+        int intersection = intersectionCount(new ArrayList<>(set1), new ArrayList<>(set2));
         int union = (set1.size() + set2.size()) - intersection;
         double similarity = jaccardSimilarity(intersection, union);
         return (int) (similarity * 65536);
@@ -36,6 +36,7 @@ class Solution {
             for (String s2 : set2) {
                 if (s1.equalsIgnoreCase(s2)) { // 원소 사이를 비교할 때, 대문자와 소문자의 차이는 무시한다.
                     count++;
+                    set2.remove(s2);
                     break;
                 }
             }
@@ -47,7 +48,7 @@ class Solution {
      * 자카드 유사도 J(A, B) = 두 집합의 교집합 크기를 두 집합의 합집합 크기로 나눈 값 
      * 두 집합이 모두 공집합일 경우에는 나눗셈이 정의되지 않으니 1
      */
-    public double jaccardSimilarity(int intersectionCount, int unionCount) {
+    private double jaccardSimilarity(int intersectionCount, int unionCount) {
         if (intersectionCount == 0 && unionCount == 0) {
             return 1;
         }
