@@ -46,6 +46,9 @@ class Solution {
     }
 
     private boolean isValid(String str) {
+        if (str.isEmpty()) {
+            return true;
+        }
         Stack<Character> stack = new Stack<>();
         stack.push(str.charAt(0));
         for (int i = 1; i < str.length(); i++) {
@@ -73,10 +76,30 @@ class Solution {
         // 4-3. ')'를 다시 붙입니다.
         answer.append(')');
         // 4-4. u의 첫 번째와 마지막 문자를 제거하고, 나머지 문자열의 괄호 방향을 뒤집어서 뒤에 붙입니다.
-        u.deleteCharAt(0);
-        u.deleteCharAt(u.length() - 1);
-        answer.append(u.reverse());
+        deleteFirstCharacter(u);
+        deleteLastCharacter(u);
+        answer.append(reverseBracket(u));
         // 4-5. 생성된 문자열을 반환합니다.
         return answer.toString();
+    }
+
+    private void deleteFirstCharacter(StringBuilder u) {
+        u.deleteCharAt(0);
+    }
+
+    private void deleteLastCharacter(StringBuilder u) {
+        u.deleteCharAt(u.length() - 1);
+    }
+
+    private String reverseBracket(StringBuilder u) {
+        StringBuilder sb = new StringBuilder();
+        for (char bracket : u.toString().toCharArray()) {
+            if (bracket == '(') {
+                sb.append(')');
+            } else {
+                sb.append('(');
+            }
+        }
+        return sb.toString();
     }
 }
