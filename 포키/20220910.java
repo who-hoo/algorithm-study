@@ -23,7 +23,7 @@ public class 괄호_변환 {
         StringBuilder u = new StringBuilder();
         int count = 0;
         for (int i = 0; i < p.length(); i++) {
-            if(u.toString().contains("(") && u.toString().contains(")") && u.length()%2 == 0){
+            if(symmetry(u.toString())){
                 count = i;
                 break;
             }
@@ -63,6 +63,24 @@ public class 괄호_변환 {
             }
         }
         return true;
+    }
+
+    private boolean symmetry(String s) {
+
+        if(s.isBlank()) return false;
+
+        int open = 0;
+        int close = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ')') {
+                close++;
+            }else{
+                open++;
+            }
+        }
+
+        return open == close;
     }
 
 }
