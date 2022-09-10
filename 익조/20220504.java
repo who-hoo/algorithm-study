@@ -1,115 +1,85 @@
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 class Main {
 
-    static int n, m, h;
-    static List<int[][]> house = new ArrayList<>();
-    static List<boolean[][]> visitedHouse = new ArrayList<>();
-    static Queue<Tomato> queue = new LinkedList<>();
+    static int[][][] board;
     static int[] dx = {1, -1, 0, 0, 0, 0}, dy = {0, 0, 1, -1, 0, 0}, dz = {0, 0, 0, 0, 1, -1};
-    static int result = 0;
+    static int m, n, h, days = 0;
 
-    static class Tomato {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        h = Integer.parseInt(st.nextToken());
 
-        int x;
-        int y;
-        int z;
-        int day;
-
-        public Tomato(int x, int y, int z, int day) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.day = day;
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        m = sc.nextInt();
-        n = sc.nextInt();
-        h = sc.nextInt();
+        board = new int[h][n][m];
 
         for (int i = 0; i < h; i++) {
-            int[][] tomatoes = new int[n][m];
             for (int j = 0; j < n; j++) {
+                st = new StringTokenizer(br.readLine());
                 for (int k = 0; k < m; k++) {
-                    tomatoes[j][k] = sc.nextInt();
+                    board[i][j][k] = Integer.parseInt(st.nextToken());
                 }
             }
-            house.add(tomatoes);
-
-            boolean[][] visited = new boolean[n][m];
-            visitedHouse.add(visited);
         }
 
-        boolean flag = true;
+        boolean[][][] visited = new boolean[h][n][m];
+        Queue<int[]> queue = new LinkedList<>();
+
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < m; k++) {
-                    if (house.get(i)[j][k] == 0) {
-                        flag = false;
-                        break;
+                    if (board[i][j][k] == 1) {
+                        queue.add(new int[]{j, k, i, 0});
+                        visited[i][j][k] = true;
                     }
                 }
             }
         }
 
-        if (flag) {
-            System.out.println(result);
-            return;
-        }
+        spread(visited, queue);
 
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < m; k++) {
-                    if (house.get(i)[j][k] == 1) {
-                        queue.add(new Tomato(j, k, i, 0));
-                        visitedHouse.get(i)[j][k] = true;
+                    if (board[i][j][k] == 0) {
+                        System.out.println(-1);
+                        return;
                     }
                 }
             }
         }
 
-        bfs();
-
-        System.out.println(result);
+        System.out.println(days);
     }
 
-    public static void bfs() {
+    private static void spread(boolean[][][] visited, Queue<int[]> queue) {
         int nx, ny, nz;
 
         while (!queue.isEmpty()) {
-            Tomato tomato = queue.poll();
-            result = Math.max(tomato.day, result);
-            for (int k = 0; k < 6; k++) {
-                nx = tomato.x + dx[k];
-                ny = tomato.y + dy[k];
-                nz = tomato.z + dz[k];
 
-                if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1 || nz < 0 || nz > h - 1
-                    || visitedHouse.get(nz)[nx][ny] || house.get(nz)[nx][ny] == -1) {
+            int[] positions = queue.poll();
+
+            for (int i = 0; i < 6; i++) {
+                nx = positions[0] + dx[i];
+                ny = positions[1] + dy[i];
+                nz = positions[2] + dz[i];
+
+                if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1 || nz < 0 || nz > h - 1 ||
+                    board[nz][nx][ny] != 0 || visited[nz][nx][ny]) {
                     continue;
                 }
 
-                visitedHouse.get(nz)[nx][ny] = true;
-                house.get(nz)[nx][ny] = 1;
-                queue.add(new Tomato(nx, ny, nz, tomato.day + 1));
-            }
-        }
-
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < m; k++) {
-                    if (house.get(i)[j][k] == 0) {
-                        result = -1;
-                        break;
-                    }
-                }
+                board[nz][nx][ny] = 1;
+                visited[nz][nx][ny] = true;
+                days = Math.max(days, positions[3] + 1);
+                queue.add(new int[]{nx, ny, nz, positions[3] + 1});
             }
         }
     }
