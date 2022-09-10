@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 class Main {
 
-    static int[][][] board;
+    static byte[][][] board;
     static int[] dx = {1, -1, 0, 0, 0, 0}, dy = {0, 0, 1, -1, 0, 0}, dz = {0, 0, 0, 0, 1, -1};
     static int m, n, h, days = 0;
 
@@ -18,13 +18,13 @@ class Main {
         n = Integer.parseInt(st.nextToken());
         h = Integer.parseInt(st.nextToken());
 
-        board = new int[h][n][m];
+        board = new byte[h][n][m];
 
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < n; j++) {
                 st = new StringTokenizer(br.readLine());
                 for (int k = 0; k < m; k++) {
-                    board[i][j][k] = Integer.parseInt(st.nextToken());
+                    board[i][j][k] = Byte.parseByte(st.nextToken());
                 }
             }
         }
