@@ -8,9 +8,8 @@ public class Solution {
     public static List<String> properBrackets = new ArrayList<>();
 
     public static void main(String[] args) {
-        //"())(()"
-        solution("()))((()");
-//        solution("(()())()");
+//        System.out.println(solution("()))((()"));
+        System.out.println(solution("(()())()"));
     }
 
     public static String solution(String p) {
@@ -29,7 +28,6 @@ public class Solution {
         //step1
         //입력이 빈 문자열인 경우, 빈 문자열 반환
         if (p.isEmpty()) {
-            properBrackets.add("");
             return;
         }
 
@@ -66,9 +64,9 @@ public class Solution {
         String reversed = "";
         for (int i = 0; i < u.length(); i++) {
             if (u.charAt(i) == '(') {
-                reversed += "(";
-            } else {
                 reversed += ")";
+            } else {
+                reversed += "(";
             }
         }
         return reversed;
@@ -125,7 +123,7 @@ public class Solution {
             return true;
         }
 
-        String pairOfBracketDeleted = balancedBracket.substring(0, firstCloseBracketIndex + 1)
+        String pairOfBracketDeleted = balancedBracket.substring(0, firstCloseBracketIndex - 1)
             + balancedBracket.substring(firstCloseBracketIndex + 1);
 
         return isProperBracket(pairOfBracketDeleted);
