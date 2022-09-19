@@ -57,7 +57,7 @@ class Solution {
             Bus bus = buses.get(busIndex);
             LocalTime crew = LocalTime.parse(time);
             if (!bus.board(crew)) { // 크루가 버스에 탑승하지 못한 경우
-                while (busIndex + 1 < n) { // 다음에 탈 수 있는 버스가 있으면
+                while (busIndex + 1 < n) { // 다음에 탈 수 있는 버스가 있으면 탑승 시도
                     if (buses.get(++busIndex).board(crew)) {
                         break;
                     }
