@@ -3,6 +3,7 @@ def timeToMin(timetable):
     for time in timetable:
         h, m = map(int, time.split(":"))
         results.append(h * 60 + m)
+
     return results
 
 
@@ -14,30 +15,33 @@ def resolveToTime(minute):
 
 
 def solution(n, t, m, timetable):
-    minute_time_table = sorted(timeToMin(timetable))
+    minTimeTable = sorted(timeToMin(timetable))
 
     curBusTime = 540
     lastBusTime = curBusTime + (n - 1) * t
     idx, count = 0, 0
+    while True:
+        if minTimeTable[idx] > lastBusTime:
+            return resolveToTime(lastBusTime)
 
-    # 막차 전까지는 가능한만큼 태워 보내기
-    while minute_time_table[idx] <= curBusTime != lastBusTime:
-        idx += 1
-        count += 1
-        if count == m or minute_time_table[idx] > curBusTime:
+        if curBusTime == lastBusTime:
+            # 남은 사람 다 탈 수 있다면 가능
+            if len(minTimeTable) - idx < m:
+                return resolveToTime(lastBusTime)
+            # 못타는 경우 새치기
+            else:
+                lastIdx = len(minTimeTable) - 1
+                while lastIdx - idx + 1 != m:
+                    lastIdx -= 1
+
+                return resolveToTime(minTimeTable[lastIdx] - 1)
+
+        # 사람 태우기
+        if minTimeTable[idx] <= curBusTime and count < m:
+            idx += 1
+            count += 1
+
+        # 인원 다 채워지면 curBusTime을 올리기
+        if count == m or minTimeTable[idx] > curBusTime:
             count = 0
             curBusTime += t
-
-    # 현재 탈 사람이 lastBus보다 늦게 오는 사람이라면 어차피 못탐
-    if minute_time_table[idx] > lastBusTime or curBusTime != lastBusTime:
-        return resolveToTime(lastBusTime)
-
-    # 남은 사람 다 탈 수 있다면 가능
-    if len(minute_time_table) - idx < m:
-        return resolveToTime(lastBusTime)
-    # 못타는 경우 새치기
-    else:
-        lastIdx = len(minute_time_table) - 1
-        while lastIdx - idx + 1 != m:
-            lastIdx -= 1
-        return resolveToTime(minute_time_table[lastIdx] - 1)
