@@ -45,11 +45,13 @@ class Solution {
             return lastBusTime.toString(); // 콘은 마지막 버스 도착 시간에 맞춰서 도착한다
         }
 
+        // 1. 버스 준비
         List<Bus> buses = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             buses.add(new Bus(firstBusTime.plusMinutes((long) i * t), m));
         }
 
+        // 2. 크루들의 버스 탑승
         int busIndex = 0;
         for (String time : timetable) {
             Bus bus = buses.get(busIndex);
@@ -63,6 +65,7 @@ class Solution {
             }
         }
 
+        // 3. 주인공 '콘'은 마지막 버스에 낑겨 타기(자리 없으면 한명 제끼기)
         return buses.get(n - 1).getLastBoard();
     }
 }
