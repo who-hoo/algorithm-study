@@ -35,6 +35,7 @@ class Solution {
     }
 
     public String solution(int n, int t, int m, String[] timetable) {
+        // 1. 크루들의 줄 서기
         Arrays.sort(timetable);
 
         LocalTime firstBusTime = LocalTime.parse("09:00");
@@ -45,11 +46,13 @@ class Solution {
             return lastBusTime.toString(); // 콘은 마지막 버스 도착 시간에 맞춰서 도착한다
         }
 
+        // 2. 버스 준비
         List<Bus> buses = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             buses.add(new Bus(firstBusTime.plusMinutes((long) i * t), m));
         }
 
+        // 3. 크루들의 버스 탑승
         int busIndex = 0;
         for (String time : timetable) {
             Bus bus = buses.get(busIndex);
@@ -63,6 +66,7 @@ class Solution {
             }
         }
 
+        // 3. 주인공 '콘'은 마지막 버스에 낑겨 탄다.(자리가 없으면 한명 제끼고 탑승)
         return buses.get(n - 1).getLastBoardTime();
     }
 }
