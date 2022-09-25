@@ -1,9 +1,16 @@
-public class Solution {
-
+class Solution {
     public String solution(int n, int t, int m, int p) {
-        // 진법 n, 미리 구할 숫자의 갯수 t, 게임에 참가하는 인원 m, 튜브의 순서 p
-        // Integer.toString(n, radix) 사용해서 풀어보자 !
-        String answer = "";
-        return answer;
+        StringBuilder answer = new StringBuilder();
+        StringBuilder temp = new StringBuilder();
+
+        for (int i = 0; temp.length() <= t * m; i++) {
+            temp.append(Integer.toString(i, n));
+        }
+
+        for (int i = p; answer.length() < t; i+= m) {
+            answer.append(temp.charAt(i - 1));
+        }
+
+        return answer.toString().toUpperCase();
     }
 }
