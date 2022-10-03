@@ -19,45 +19,40 @@ class Solution {
 
         private String head;
         private String number;
-        private String tail;
+        private String filename;
 
         File(String filename) {
             StringBuilder head = new StringBuilder();
             StringBuilder number = new StringBuilder();
-            StringBuilder tail = new StringBuilder();
 
-            int i = 0;
-            while (!Character.isDigit(filename.charAt(i))) {
-                head.append(filename.charAt(i++));
-            }
-            while (Character.isDigit(filename.charAt(i)) && number.length() <= 5) {
-                number.append(filename.charAt(i++));
-            }
-            if (i < filename.length()) {
-                tail.append(filename.substring(i));
+            for (char ch : filename.toCharArray()) {
+                if (!Character.isDigit(ch) && number.length() == 0) {
+                    head.append(ch);
+                    continue;
+                }
+                if (Character.isDigit(ch) && number.length() <= 5) {
+                    number.append(ch);
+                    continue;
+                }
+                break;
             }
 
             this.head = head.toString();
             this.number = number.toString();
-            this.tail = tail.toString();
+            this.filename = filename;
         }
 
         @Override
         public String toString() {
-            return head + number + tail;
+            return filename;
         }
 
         @Override
         public int compareTo(File o) {
-            // 1. HEAD를 기준으로 사전 순(대소문자 구분 x)
-            int result = this.head.compareToIgnoreCase(o.head);
-            if (result != 0) {
-                return result;
+            if (this.head.equalsIgnoreCase(o.head)) {
+                return Integer.parseInt(this.number) - Integer.parseInt(o.number);
             }
-            // 2. NUMBER의 숫자 순으로(숫자 앞의 0은 무시)
-            result = Integer.parseInt(this.number) - Integer.parseInt(o.number);
-            // 3. 원래 입력에 주어진 순서 유지
-            return result;
+            return this.head.compareToIgnoreCase(o.head);
         }
     }
 }
