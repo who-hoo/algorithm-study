@@ -1,5 +1,5 @@
 class Solution {
-
+    
     public int solution(int[] sticker) {
         int length = sticker.length;
 
@@ -13,15 +13,10 @@ class Solution {
 
         memo1[0] = sticker[0];
         memo1[1] = Math.max(sticker[0], sticker[1]);
+        memo2[1] = sticker[1];
 
         for (int i = 2; i < length; i++) {
             memo1[i] = Math.max(memo1[i - 2] + sticker[i], memo1[i - 1]);
-        }
-
-        memo2[1] = sticker[1];
-        memo2[2] = Math.max(sticker[1], sticker[2]);
-
-        for (int i = 3; i < length; i++) {
             memo2[i] = Math.max(memo2[i - 2] + sticker[i], memo2[i - 1]);
         }
 
