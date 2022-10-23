@@ -17,27 +17,27 @@ public class PRO_12971_스티커모으기2 {
     }
 
     public int solution(int sticker[]) {
-        int[] DP1 = new int[sticker.length];
-        int[] DP2 = new int[sticker.length];
+        int[][] DP = new int[sticker.length][2];
 
-        DP1[0] = sticker[0];
+        DP[0][0] = sticker[0];
+        DP[0][1] = 0;
 
         for (int i = 1; i < sticker.length; i++) {
             if (i == 1) {
-                DP1[i] = Math.max(sticker[0], sticker[1]);
-                DP2[i] = sticker[1];
+                DP[i][0] = Math.max(sticker[0], sticker[1]);
+                DP[i][1] = sticker[1];
                 continue;
             }
             if (i == sticker.length - 1) {
-                DP1[i] = DP1[i - 1];
-                DP2[i] = Math.max(DP2[i - 1], DP2[i - 2] + sticker[i]);
+                DP[i][0] = DP[i - 1][0];
+                DP[i][1] = Math.max(DP[i - 1][1], DP[i - 2][1] + sticker[i]);
                 break;
             }
-            DP1[i] = Math.max(DP1[i - 1], DP1[i - 2] + sticker[i]);
-            DP2[i] = Math.max(DP2[i - 1], DP2[i - 2] + sticker[i]);
+            DP[i][0] = Math.max(DP[i - 1][0], DP[i - 2][0] + sticker[i]);
+            DP[i][1] = Math.max(DP[i - 1][1], DP[i - 2][1] + sticker[i]);
         }
 
-        return Math.max(DP1[sticker.length - 1], DP2[sticker.length - 1]);
+        return Math.max(DP[sticker.length - 1][0], DP[sticker.length - 1][1]);
     }
 
 }
