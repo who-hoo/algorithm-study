@@ -2,13 +2,11 @@ class Solution {
 
     public int[] solution(int rows, int columns, int[][] queries) {
         int[][] d = new int[rows + 1][columns + 1];
-        int[][] origin = new int[rows + 1][columns + 1];
 
         int count = 0;
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
                 d[i][j] = ++count;
-                origin[i][j] = count;
             }
         }
 
@@ -21,27 +19,34 @@ class Solution {
             rowEnd = query[2];
             colEnd = query[3];
 
-            for (int i = colStart + 1; i <= colEnd; i++) {
-                d[rowStart][i] = origin[rowStart][i - 1];
-                result = Math.min(result, d[rowStart][i]);
-            }
+            int temp = d[rowStart][colStart];
+            result = Math.min(result, temp);
 
-            for (int i = colEnd - 1; i >= colStart; i--) {
-                d[rowEnd][i] = origin[rowEnd][i + 1];
-                result = Math.min(result, d[rowEnd][i]);
-            }
-
-            for (int i = rowStart + 1; i <= rowEnd; i++) {
-                d[i][colEnd] = origin[i - 1][colEnd];
-                result = Math.min(result, d[i][colEnd]);
-            }
-
-            for (int i = rowEnd - 1; i >= rowStart; i--) {
-                d[i][colStart] = origin[i + 1][colStart];
+            // left
+            for (int i = rowStart; i < rowEnd; i++) {
+                d[i][colStart] = d[i + 1][colStart];
                 result = Math.min(result, d[i][colStart]);
             }
 
-            deepCopy(d, origin, rows, columns);
+            // bottom
+            for (int i = colStart; i < colEnd; i++) {
+                d[rowEnd][i] = d[rowEnd][i + 1];
+                result = Math.min(result, d[rowEnd][i]);
+            }
+
+            // right
+            for (int i = rowEnd; i > rowStart; i--) {
+                d[i][colEnd] = d[i - 1][colEnd];
+                result = Math.min(result, d[i][colEnd]);
+            }
+
+            // top
+            for (int i = colEnd; i > colStart; i--) {
+                d[rowStart][i] = d[rowStart][i - 1];
+                result = Math.min(result, d[rowStart][i]);
+            }
+
+            d[rowStart][colStart + 1] = temp;
 
             answer[resultIndex] = result;
             result = 10001;
@@ -49,12 +54,5 @@ class Solution {
         }
 
         return answer;
-    }
-
-    private void deepCopy(int[][] d, int[][] origin, int row, int col) {
-        for (int i = 1; i <= row; i++) {
-            if (col >= 0)
-                System.arraycopy(d[i], 1, origin[i], 1, col);
-        }
     }
 }
