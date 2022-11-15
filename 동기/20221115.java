@@ -17,7 +17,7 @@ public class Main {
         int n = Integer.parseInt(split[0]);
         int m = Integer.parseInt(split[1]);
         
-        if (n - 1 == 0 && m - 1 == 0) {
+        if (n == 1 && m == 1) {
             System.out.println(1);
             System.exit(0);
         }
