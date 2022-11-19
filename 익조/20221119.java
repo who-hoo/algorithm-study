@@ -50,6 +50,6 @@ class Solution {
             }
         }
 
-        return sum[m - 1][n - 1][0] % MOD;
+        return sum[m - 1][n - 1][0];
     }
 }
