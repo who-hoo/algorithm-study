@@ -1,16 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Main {
-
-    static Map<Integer, Integer> ladder = new HashMap<>();
-    static Map<Integer, Integer> snakes = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,15 +13,16 @@ class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken()), m = Integer.parseInt(st.nextToken());
+        int[] ladders = new int[101], snakes = new int[101];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            ladder.put(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+            ladders[Integer.parseInt(st.nextToken())] = Integer.parseInt(st.nextToken());
         }
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            snakes.put(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+            snakes[Integer.parseInt(st.nextToken())] = Integer.parseInt(st.nextToken());
         }
 
         boolean[] visited = new boolean[101];
@@ -50,10 +46,10 @@ class Main {
 
                 visited[pos[0] + i] = true;
 
-                if (ladder.containsKey(pos[0] + i)) {
-                    queue.add(new int[]{ladder.get(pos[0] + i), pos[1] + 1});
-                } else if (snakes.containsKey(pos[0] + i)) {
-                    queue.add(new int[]{snakes.get(pos[0] + i), pos[1] + 1});
+                if (ladders[pos[0] + i] > 0) {
+                    queue.add(new int[]{ladders[pos[0] + i], pos[1] + 1});
+                } else if (snakes[pos[0] + i] > 0) {
+                    queue.add(new int[]{snakes[pos[0] + i], pos[1] + 1});
                 } else {
                     queue.add(new int[]{pos[0] + i, pos[1] + 1});
                 }
